@@ -1,0 +1,8 @@
+resources:
+  - ../../base
+
+commonLabels:
+  project: {{ parameters.project_name }}
+  environment: stg
+  owner: {{ parameters.owner }}
+namePrefix: {{ parameters.project_name }}-

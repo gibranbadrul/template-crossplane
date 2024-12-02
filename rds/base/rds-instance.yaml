@@ -1,0 +1,24 @@
+apiVersion: database.aws.crossplane.io/v1beta1
+kind: RDSInstance
+metadata:
+  name: {{ parameters.project_name }}-{{ parameters.env }}
+  labels:
+    owner: {{ parameters.owner }}
+    system: {{ parameters.system }}
+    environment: {{ parameters.env }}
+    project: {{ parameters.project_name }}
+spec:
+  forProvider:
+    dbInstanceClass: db.t3.micro
+    allocatedStorage: 20
+    storageType: gp2
+    engine: {{ parameters.database.type }}
+    engineVersion: "12.8"
+    masterUsername: admin
+    masterPasswordSecretRef:
+      name: {{ parameters.project_name }}-{{ parameters.env }}-db-credentials
+      key: password
+    skipFinalSnapshotBeforeDeletion: true
+    publiclyAccessible: false
+  writeConnectionSecretToRef:
+    name: {{ parameters.project_name }}-{{ parameters.env }}-db-con
