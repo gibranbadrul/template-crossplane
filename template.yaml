@@ -13,10 +13,10 @@ spec:
   parameters:
     - title: Provide Component Information
       required:
-        - component_id
+        - artifact_id
         - owner
       properties:
-        component_id:
+        artifact_id:
           title: Name
           type: string
           description: Unique name of the component
@@ -66,7 +66,7 @@ spec:
       input:
         url: ./.skeleton
         values:
-          component_id: ${{ parameters.component_id }}
+          artifact_id: ${{ parameters.artifact_id }}
           description: ${{ parameters.description }}
           owner: ${{ parameters.owner }}
 
@@ -77,7 +77,7 @@ spec:
       input:
         url: ./.skeleton/bigquery
         values:
-          artifact_id: ${{ parameters.component_id }}
+          artifact_id: ${{ parameters.artifact_id }}
 
     - id: process-elasticache
       name: Process ElastiCache
@@ -86,7 +86,7 @@ spec:
       input:
         url: ./.skeleton/elasticache
         values:
-          artifact_id: ${{ parameters.component_id }}
+          artifact_id: ${{ parameters.artifact_id }}
 
     - id: process-rds
       name: Process RDS
@@ -95,7 +95,7 @@ spec:
       input:
         url: ./.skeleton/rds
         values:
-          artifact_id: ${{ parameters.component_id }}
+          artifact_id: ${{ parameters.artifact_id }}
 
     - id: process-s3
       name: Process S3
@@ -104,14 +104,14 @@ spec:
       input:
         url: ./.skeleton/s3
         values:
-          artifact_id: ${{ parameters.component_id }}
+          artifact_id: ${{ parameters.artifact_id }}
 
     - id: publish
       name: Publish
       action: publish:github
       input:
         allowedHosts: ["github.com"]
-        description: This is ${{ parameters.component_id }}
+        description: This is ${{ parameters.artifact_id }}
         repoUrl: ${{ parameters.repoUrl }}
 
     # - id: register-bigquery
@@ -120,7 +120,7 @@ spec:
     #   action: catalog:register
     #   input:
     #     repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
-    #     catalogInfoPath: "/bigquery/${{ parameters.component_id }}/prd/catalog-info.yaml"
+    #     catalogInfoPath: "/bigquery/${{ parameters.artifact_id }}/prd/catalog-info.yaml"
 
     # - id: register-elasticache
     #   name: Register ElastiCache
@@ -128,7 +128,7 @@ spec:
     #   action: catalog:register
     #   input:
     #     repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
-    #     catalogInfoPath: "/elasticache/${{ parameters.component_id }}/prd/catalog-info.yaml"
+    #     catalogInfoPath: "/elasticache/${{ parameters.artifact_id }}/prd/catalog-info.yaml"
 
     # - id: register-rds
     #   name: Register RDS
@@ -136,7 +136,7 @@ spec:
     #   action: catalog:register
     #   input:
     #     repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
-    #     catalogInfoPath: "/rds/${{ parameters.component_id }}/prd/catalog-info.yaml"
+    #     catalogInfoPath: "/rds/${{ parameters.artifact_id }}/prd/catalog-info.yaml"
 
     # - id: register-s3
     #   name: Register S3
@@ -144,7 +144,7 @@ spec:
     #   action: catalog:register
     #   input:
     #     repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
-    #     catalogInfoPath: "/s3/${{ parameters.component_id }}/prd/catalog-info.yaml"
+    #     catalogInfoPath: "/s3/${{ parameters.artifact_id }}/prd/catalog-info.yaml"
 
   output:
     links:
