@@ -150,6 +150,6 @@ spec:
     links:
       - title: Repository
         url: ${{ steps.publish.output.remoteUrl }}
-      - title: Open in Catalog
-        icon: catalog
-        entityRef: ${{ steps.register-bigquery.output.entityRef || steps.register-elasticache.output.entityRef || steps.register-rds.output.entityRef || steps.register-s3.output.entityRef }}
+      # - title: Open in Catalog
+      #   icon: catalog
+      #   entityRef: ${{ steps.register-bigquery.output.entityRef || steps.register-elasticache.output.entityRef || steps.register-rds.output.entityRef || steps.register-s3.output.entityRef }}
