@@ -1,7 +1,0 @@
-resources:
-  - rds-instance.yaml
-
-commonLabels:
-  project: {{ parameters.project_name }}
-  owner: {{ parameters.owner }}
-  system: {{ parameters.system }}
