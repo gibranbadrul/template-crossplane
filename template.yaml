@@ -1,0 +1,155 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: infra-scaffold-template
+  title: Infrastructure Scaffold Template
+  description: Scaffold infrastructure resources and register them in Backstage
+  tags:
+    - infrastructure
+    - crossplane
+spec:
+  owner: infra@example.com
+  type: infrastructure
+  parameters:
+    - title: Provide Component Information
+      required:
+        - component_id
+        - owner
+      properties:
+        component_id:
+          title: Name
+          type: string
+          description: Unique name of the component
+          ui:field: EntityNamePicker
+        description:
+          title: Description
+          type: string
+          description: Brief description of the component.
+        owner:
+          title: Owner
+          type: string
+          description: Owner of the component
+          ui:field: OwnerPicker
+          ui:options:
+            allowedKinds:
+              - Group
+    - title: Choose Components
+      properties:
+        use_bigquery:
+          title: Use BigQuery
+          type: boolean
+        use_elasticache:
+          title: Use ElastiCache
+          type: boolean
+        use_rds:
+          title: Use RDS
+          type: boolean
+        use_s3:
+          title: Use S3
+          type: boolean
+    - title: Choose a Repository Location
+      required:
+        - repoUrl
+      properties:
+        repoUrl:
+          title: Repository Location
+          type: string
+          ui:field: RepoUrlPicker
+          ui:options:
+            allowedHosts:
+              - github.com
+
+  steps:
+    - id: template
+      name: Fetch Skeleton + Template
+      action: fetch:template
+      input:
+        url: ./.skeleton
+        values:
+          component_id: ${{ parameters.component_id }}
+          description: ${{ parameters.description }}
+          owner: ${{ parameters.owner }}
+
+    - id: process-bigquery
+      name: Process BigQuery
+      if: ${{ parameters.use_bigquery }}
+      action: fetch:template
+      input:
+        url: ./.skeleton/bigquery
+        values:
+          artifact_id: ${{ parameters.component_id }}
+
+    - id: process-elasticache
+      name: Process ElastiCache
+      if: ${{ parameters.use_elasticache }}
+      action: fetch:template
+      input:
+        url: ./.skeleton/elasticache
+        values:
+          artifact_id: ${{ parameters.component_id }}
+
+    - id: process-rds
+      name: Process RDS
+      if: ${{ parameters.use_rds }}
+      action: fetch:template
+      input:
+        url: ./.skeleton/rds
+        values:
+          artifact_id: ${{ parameters.component_id }}
+
+    - id: process-s3
+      name: Process S3
+      if: ${{ parameters.use_s3 }}
+      action: fetch:template
+      input:
+        url: ./.skeleton/s3
+        values:
+          artifact_id: ${{ parameters.component_id }}
+
+    - id: publish
+      name: Publish
+      action: publish:github
+      input:
+        allowedHosts: ["github.com"]
+        description: This is ${{ parameters.component_id }}
+        repoUrl: ${{ parameters.repoUrl }}
+
+    - id: register-bigquery
+      name: Register BigQuery
+      if: ${{ parameters.use_bigquery }}
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
+        catalogInfoPath: "/bigquery/${{ parameters.component_id }}/prd/catalog-info.yaml"
+
+    - id: register-elasticache
+      name: Register ElastiCache
+      if: ${{ parameters.use_elasticache }}
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
+        catalogInfoPath: "/elasticache/${{ parameters.component_id }}/prd/catalog-info.yaml"
+
+    - id: register-rds
+      name: Register RDS
+      if: ${{ parameters.use_rds }}
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
+        catalogInfoPath: "/rds/${{ parameters.component_id }}/prd/catalog-info.yaml"
+
+    - id: register-s3
+      name: Register S3
+      if: ${{ parameters.use_s3 }}
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
+        catalogInfoPath: "/s3/${{ parameters.component_id }}/prd/catalog-info.yaml"
+
+  output:
+    links:
+      - title: Repository
+        url: ${{ steps.publish.output.remoteUrl }}
+      - title: Open in Catalog
+        icon: catalog
+        entityRef: ${{ steps.register-bigquery.output.entityRef || steps.register-elasticache.output.entityRef || steps.register-rds.output.entityRef || steps.register-s3.output.entityRef }}

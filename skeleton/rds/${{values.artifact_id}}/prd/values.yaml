@@ -1,0 +1,4 @@
+dbInstanceIdentifier: ${{values.db_instance_identifier}}
+dbInstanceClass: ${{values.db_instance_class}}
+engine: "postgres"
+allocatedStorage: ${{values.allocated_storage}}

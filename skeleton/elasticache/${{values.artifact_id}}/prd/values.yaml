@@ -1,0 +1,4 @@
+clusterName: ${{values.cluster_name}}
+engine: "redis"
+nodeType: ${{values.node_type}}
+numCacheNodes: ${{values.num_cache_nodes}}

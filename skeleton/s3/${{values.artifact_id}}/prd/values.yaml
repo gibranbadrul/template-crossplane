@@ -1,0 +1,3 @@
+bucketName: ${{values.bucket_name}}
+region: ${{values.region}}
+versioning: ${{values.versioning}}

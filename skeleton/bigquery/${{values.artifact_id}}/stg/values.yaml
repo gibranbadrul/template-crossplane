@@ -1,0 +1,3 @@
+projectId: ${{values.project_id}}
+datasetId: ${{values.dataset_id}}
+location: ${{values.location}}
