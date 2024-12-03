@@ -114,37 +114,37 @@ spec:
         description: This is ${{ parameters.component_id }}
         repoUrl: ${{ parameters.repoUrl }}
 
-    - id: register-bigquery
-      name: Register BigQuery
-      if: ${{ parameters.use_bigquery }}
-      action: catalog:register
-      input:
-        repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
-        catalogInfoPath: "/bigquery/${{ parameters.component_id }}/prd/catalog-info.yaml"
+    # - id: register-bigquery
+    #   name: Register BigQuery
+    #   if: ${{ parameters.use_bigquery }}
+    #   action: catalog:register
+    #   input:
+    #     repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
+    #     catalogInfoPath: "/bigquery/${{ parameters.component_id }}/prd/catalog-info.yaml"
 
-    - id: register-elasticache
-      name: Register ElastiCache
-      if: ${{ parameters.use_elasticache }}
-      action: catalog:register
-      input:
-        repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
-        catalogInfoPath: "/elasticache/${{ parameters.component_id }}/prd/catalog-info.yaml"
+    # - id: register-elasticache
+    #   name: Register ElastiCache
+    #   if: ${{ parameters.use_elasticache }}
+    #   action: catalog:register
+    #   input:
+    #     repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
+    #     catalogInfoPath: "/elasticache/${{ parameters.component_id }}/prd/catalog-info.yaml"
 
-    - id: register-rds
-      name: Register RDS
-      if: ${{ parameters.use_rds }}
-      action: catalog:register
-      input:
-        repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
-        catalogInfoPath: "/rds/${{ parameters.component_id }}/prd/catalog-info.yaml"
+    # - id: register-rds
+    #   name: Register RDS
+    #   if: ${{ parameters.use_rds }}
+    #   action: catalog:register
+    #   input:
+    #     repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
+    #     catalogInfoPath: "/rds/${{ parameters.component_id }}/prd/catalog-info.yaml"
 
-    - id: register-s3
-      name: Register S3
-      if: ${{ parameters.use_s3 }}
-      action: catalog:register
-      input:
-        repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
-        catalogInfoPath: "/s3/${{ parameters.component_id }}/prd/catalog-info.yaml"
+    # - id: register-s3
+    #   name: Register S3
+    #   if: ${{ parameters.use_s3 }}
+    #   action: catalog:register
+    #   input:
+    #     repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
+    #     catalogInfoPath: "/s3/${{ parameters.component_id }}/prd/catalog-info.yaml"
 
   output:
     links:
